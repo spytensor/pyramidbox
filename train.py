@@ -131,8 +131,8 @@ def train():
     if args.visdom:
         # initialize visdom loss plot
         lot = viz.line(
-            X=torch.zeros((1,)).cpu().numpy(),
-            Y=torch.zeros((1, 3)).cpu().numpy(),
+            X=torch.zeros((1,)).cpu(),
+            Y=torch.zeros((1, 3)).cpu(),
             opts=dict(
                 xlabel='Iteration',
                 ylabel='Loss',
@@ -141,8 +141,8 @@ def train():
             )
         )
         epoch_lot = viz.line(
-            X=torch.zeros((1,)).cpu().numpy(),
-            Y=torch.zeros((1, 3)).cpu().numpy(),
+            X=torch.zeros((1,)).cpu(),
+            Y=torch.zeros((1, 3)).cpu(),
             opts=dict(
                 xlabel='Epoch',
                 ylabel='Loss',
@@ -163,7 +163,7 @@ def train():
             adjust_learning_rate(optimizer, args.gamma, step_index)
             if args.visdom:
                 viz.line(
-                    X=torch.ones((1, 3)).cpu().numpy() * epoch,
+                    X=torch.ones((1, 3)).cpu() * epoch,
                     Y=torch.Tensor([loc_loss, conf_loss,
                         loc_loss + conf_loss]).unsqueeze(0).cpu().numpy() / epoch_size,
                     win=epoch_lot,
@@ -209,7 +209,7 @@ def train():
                 viz.image(images.data[random_batch_index].cpu().numpy())
         if args.visdom:
             viz.line(
-                X=torch.ones((1, 3)).cpu().numpy() * iteration,
+                X=torch.ones((1, 3)).cpu() * iteration,
                 Y=torch.Tensor([loss_l.data[0], loss_c.data[0],
                     loss_l.data[0] + loss_c.data[0]]).unsqueeze(0).cpu().numpy(),
                 win=lot,
@@ -218,7 +218,7 @@ def train():
             # hacky fencepost solution for 0th epoch plot
             if iteration == 0:
                 viz.line(
-                    X=torch.zeros((1, 3)).cpu().numpy(),
+                    X=torch.zeros((1, 3)).cpu(),
                     Y=torch.Tensor([loc_loss, conf_loss,
                         loc_loss + conf_loss]).unsqueeze(0).cpu().numpy(),
                     win=epoch_lot,
